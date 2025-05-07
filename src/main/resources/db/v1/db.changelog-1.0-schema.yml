@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-schema
+      author: dmitry
+      changes:
+        - sql: CREATE SCHEMA IF NOT EXISTS subtracker;
