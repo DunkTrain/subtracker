@@ -9,16 +9,14 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: UUID
+                  type: BIGSERIAL
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
                   name: name
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
-                    unique: true
               - column:
                   name: email
                   type: VARCHAR(255)
@@ -36,10 +34,9 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: UUID
+                  type: BIGSERIAL
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
                   name: service_name
                   type: VARCHAR(255)
@@ -47,7 +44,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: user_id
-                  type: UUID
+                  type: BIGINT
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
