@@ -7,6 +7,7 @@ import ru.shevchenko.subtracker.audit.annotation.Auditable;
 import ru.shevchenko.subtracker.dto.user.UserCreateDto;
 import ru.shevchenko.subtracker.dto.user.UserResponseDto;
 import ru.shevchenko.subtracker.dto.user.UserUpdateDto;
+import ru.shevchenko.subtracker.exception.EmailAlreadyExistsException;
 import ru.shevchenko.subtracker.exception.UserNotFoundException;
 import ru.shevchenko.subtracker.mapper.UserMapper;
 import ru.shevchenko.subtracker.model.Users;
@@ -24,6 +25,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Auditable(action = "USER_CREATE")
     public UserResponseDto createUser(UserCreateDto dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new EmailAlreadyExistsException(dto.getEmail());
+        }
+
         Users user = userMapper.toEntity(dto);
 
         return userMapper.toDto(userRepository.save(user));
@@ -44,8 +49,12 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto updateUser(Long id, UserUpdateDto dto) {
         Users user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-        Users updated = userMapper.toEntity(dto, user);
 
+        if (!user.getEmail().equals(dto.getEmail()) && userRepository.existsByEmail(dto.getEmail())) {
+            throw new EmailAlreadyExistsException(dto.getEmail());
+        }
+
+        Users updated = userMapper.toEntity(dto, user);
         return userMapper.toDto(userRepository.save(user));
     }
 
