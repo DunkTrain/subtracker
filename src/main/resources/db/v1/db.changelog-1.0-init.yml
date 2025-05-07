@@ -25,11 +25,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     unique: true
-              - column:
-                  name: password
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
 
   - changeSet:
       id: 3-create-subscriptions-table
