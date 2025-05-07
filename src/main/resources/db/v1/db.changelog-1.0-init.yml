@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2-create-users-table
+      author: dmitry
+      changes:
+        - createTable:
+            tableName: users
+            schemaName: subtracker
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 3-create-subscriptions-table
+      author: dmitry
+      changes:
+        - createTable:
+            tableName: subscriptions
+            schemaName: subtracker
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: service_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: subscriptions
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            baseTableSchemaName: subtracker
+            referencedTableSchemaName: subtracker
+            constraintName: fk_subscriptions_user
