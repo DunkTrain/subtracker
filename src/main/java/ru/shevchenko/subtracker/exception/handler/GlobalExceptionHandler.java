@@ -5,11 +5,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.shevchenko.subtracker.dto.error.ErrorResponse;
 import ru.shevchenko.subtracker.exception.EmailAlreadyExistsException;
 import ru.shevchenko.subtracker.exception.UserNotFoundException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Обрабатывает предсказуемые ошибки и возвращает структурированные ответы клиенту.
@@ -22,8 +20,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleUserNotFound(UserNotFoundException ex) {
-        return Map.of("error", ex.getMessage());
+    public ErrorResponse handleUserNotFound(UserNotFoundException ex) {
+        return new ErrorResponse(ex.getMessage());
     }
 
     /**
@@ -31,11 +29,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidation(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(err ->
-                errors.put(err.getField(), err.getDefaultMessage()));
-        return errors;
+    public ErrorResponse handleValidation(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult().getFieldErrors().stream()
+                .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                .findFirst()
+                .orElse("Ошибка валидации данных");
+        return new ErrorResponse(errorMessage);
     }
 
     /**
@@ -43,8 +42,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(EmailAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, String> handleEmailExists(EmailAlreadyExistsException ex) {
-        return Map.of("error", ex.getMessage());
+    public ErrorResponse handleEmailExists(EmailAlreadyExistsException ex) {
+        return new ErrorResponse(ex.getMessage());
     }
 
     /**
@@ -52,7 +51,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> handleOtherExceptions(Exception ex) {
-        return Map.of("error", "Внутренняя ошибка сервера");
+    public ErrorResponse handleOtherExceptions(Exception ex) {
+        return new ErrorResponse("Внутренняя ошибка сервера");
     }
 }
