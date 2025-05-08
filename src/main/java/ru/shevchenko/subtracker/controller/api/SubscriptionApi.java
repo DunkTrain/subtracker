@@ -28,6 +28,7 @@ import java.util.List;
 @RequestMapping("/api")
 public interface SubscriptionApi {
 
+    /* ---------- CREATE ---------- */
     @PostMapping("/users/{id}/subscriptions")
     @Operation(summary = "Добавить подписку пользователю")
     @ApiResponses({
@@ -46,6 +47,7 @@ public interface SubscriptionApi {
             @PathVariable Long id,
             @Valid @RequestBody SubscriptionCreateDto dto);
 
+    /* ---------- READ ---------- */
     @GetMapping("/users/{id}/subscriptions")
     @Operation(summary = "Получить подписки пользователя")
     @ApiResponses({
@@ -57,6 +59,7 @@ public interface SubscriptionApi {
             @Parameter(description = "ID пользователя", required = true)
             @PathVariable Long id);
 
+    /* ---------- DELETE ---------- */
     @DeleteMapping("/users/{id}/subscriptions/{subId}")
     @Operation(summary = "Удалить подписку у пользователя")
     @ApiResponses({
@@ -71,6 +74,7 @@ public interface SubscriptionApi {
             @Parameter(description = "ID подписки", required = true)
             @PathVariable Long subId);
 
+    /* ---------- READ ---------- */
     @GetMapping("/subscriptions/top")
     @Operation(summary = "Получить топ-3 популярных подписок")
     @ApiResponses({
