@@ -30,6 +30,11 @@ http://localhost:8080
 - UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 - OpenAPI JSON: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
+## 📚 Примеры вызова API
+
+📎 Полный список примеров ручек:  
+[docs/api-endpoints.md](docs/api-endpoints.md)
+
 ---
 
 ## 🧩 Используемые технологии
