@@ -37,7 +37,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscriptions, Lon
      * @param pageable пагинация (например, top 3)
      * @return список DTO со статистикой подписок
      */
-    @Query("SELECT new SubscriptionStatsDto(s.serviceName, COUNT(s)) " +
+    @Query("SELECT new ru.shevchenko.subtracker.dto.subscription.SubscriptionStatsDto(s.serviceName, COUNT(s)) " +
             "FROM Subscriptions s GROUP BY s.serviceName ORDER BY COUNT(s) DESC")
     List<SubscriptionStatsDto> findTopPopular(Pageable pageable);
 }
