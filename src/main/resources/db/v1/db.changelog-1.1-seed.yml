@@ -79,3 +79,12 @@ databaseChangeLog:
             columns:
               - column: { name: service_name, value: "Yandex PLUS" }
               - column: { name: user_id,      valueNumeric: 3 }
+
+  - changeSet:
+      id: 6-reset-id-sequences
+      author: dmitry
+      changes:
+        - sql:
+            sql: |
+              SELECT setval('subtracker.users_id_seq', (SELECT MAX(id) FROM subtracker.users));
+              SELECT setval('subtracker.subscriptions_id_seq', COALESCE((SELECT MAX(id) FROM subtracker.subscriptions), 1));
