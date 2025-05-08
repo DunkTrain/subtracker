@@ -1,16 +1,18 @@
 # API Endpoints — Subtracker
 
-Полный список ручек для работы с пользователями.
+Полный список ручек для работы с пользователями и подписками.
 
 Базовый URL:
 
 ```
-http://localhost:8080/api/users
+http://localhost:8080/api
 ```
 
 ---
 
-## POST /api/users — создать пользователя
+## Пользователи
+
+### POST /users — создать пользователя
 
 **Пример запроса:**
 
@@ -21,9 +23,7 @@ http://localhost:8080/api/users
 }
 ```
 
-**Ответ:**
-
-* `201 Created`
+**Ответ:** `201 Created`
 
 ```json
 {
@@ -36,34 +36,15 @@ http://localhost:8080/api/users
 **Ошибки:**
 
 * `400 Bad Request`
-
-```json
-{
-  "error": "email: должно быть корректным адресом"
-}
-```
-
 * `409 Conflict`
-
-```json
-{
-  "error": "Пользователь с таким email уже существует"
-}
-```
 
 ---
 
-## GET /api/users/{id} — получить пользователя по ID
+### GET /users/{id} — получить пользователя по ID
 
-**Пример:**
+**Пример:** `GET /users/1`
 
-```
-GET /api/users/1
-```
-
-**Ответ:**
-
-* `200 OK`
+**Ответ:** `200 OK`
 
 ```json
 {
@@ -73,19 +54,11 @@ GET /api/users/1
 }
 ```
 
-**Ошибка:**
-
-* `404 Not Found`
-
-```json
-{
-  "error": "Пользователь с id 1 не найден"
-}
-```
+**Ошибка:** `404 Not Found`
 
 ---
 
-## UT /api/users/{id} — обновить пользователя
+### PUT /users/{id} — обновить пользователя
 
 **Пример запроса:**
 
@@ -96,9 +69,7 @@ GET /api/users/1
 }
 ```
 
-**Ответ:**
-
-* `200 OK`
+**Ответ:** `200 OK`
 
 ```json
 {
@@ -111,49 +82,99 @@ GET /api/users/1
 **Ошибки:**
 
 * `400 Bad Request`
-
-```json
-{
-  "error": "name: не должно быть пустым"
-}
-```
-
 * `404 Not Found`
-
-```json
-{
-  "error": "Пользователь с id 1 не найден"
-}
-```
-
 * `409 Conflict`
-
-```json
-{
-  "error": "Пользователь с таким email уже существует"
-}
-```
 
 ---
 
-## DELETE /api/users/{id} — удалить пользователя
+### DELETE /users/{id} — удалить пользователя
 
-**Пример:**
+**Пример:** `DELETE /users/1`
 
-```
-DELETE /api/users/1
-```
+**Ответ:** `204 No Content`
 
-**Ответ:**
+**Ошибка:** `404 Not Found`
 
-* `204 No Content`
+---
 
-**Ошибка:**
+## Подписки
 
-* `404 Not Found`
+### POST /users/{id}/subscriptions — добавить подписку
+
+**Пример запроса:**
 
 ```json
 {
-  "error": "Пользователь с id 1 не найден"
+  "serviceName": "Netflix"
 }
 ```
+
+**Ответ:** `201 Created`
+
+```json
+{
+  "id": 1,
+  "serviceName": "Netflix"
+}
+```
+
+**Ошибки:**
+
+* `400 Bad Request`
+* `404 Not Found` — пользователь не найден
+* `409 Conflict` — подписка уже существует
+
+---
+
+### GET /users/{id}/subscriptions — получить подписки пользователя
+
+**Пример:** `GET /users/1/subscriptions`
+
+**Ответ:** `200 OK`
+
+```json
+[
+  {
+    "id": 1,
+    "serviceName": "Netflix"
+  }
+]
+```
+
+**Ошибка:** `404 Not Found`
+
+---
+
+### DELETE /users/{id}/subscriptions/{subId} — удалить подписку
+
+**Пример:** `DELETE /users/1/subscriptions/2`
+
+**Ответ:** `204 No Content`
+
+**Ошибка:** `404 Not Found` — подписка не найдена или не принадлежит пользователю
+
+---
+
+### GET /subscriptions/top — получить топ-3 популярных подписок
+
+**Пример:** `GET /subscriptions/top`
+
+**Ответ:** `200 OK`
+
+```json
+[
+  {
+    "serviceName": "Yandex PLUS",
+    "count": 3
+  },
+  {
+    "serviceName": "Netflix",
+    "count": 2
+  },
+  {
+    "serviceName": "YouTube Premium",
+    "count": 2
+  }
+]
+```
+
