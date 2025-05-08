@@ -4,7 +4,7 @@
 
 ---
 
-## 🚀 Быстрый старт
+## Быстрый старт
 
 > Требования: установлен Docker и Docker Compose
 
@@ -25,19 +25,19 @@ http://localhost:8080
 
 ---
 
-## 🔗 Swagger-документация
+## Swagger-документация
 
 - UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 - OpenAPI JSON: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
-## 📚 Примеры вызова API
+## Примеры вызова API
 
 📎 Полный список примеров ручек:  
 [docs/api-endpoints.md](docs/api-endpoints.md)
 
 ---
 
-## 🧩 Используемые технологии
+## Используемые технологии
 
 - Spring Boot (REST API, JPA)
 - PostgreSQL + Liquibase (миграции и сиды)
@@ -46,20 +46,20 @@ http://localhost:8080
 
 ---
 
-## 📁 Liquibase
+## Liquibase
 
 ```
 src/main/resources/db/changelog/
-├── changelog-master.yml
-└── v1/
-    ├── db.changelog-1.0-schema.yml     # создание схемы и таблиц
-    ├── db.changelog-1.0-init.yml       # users, subscriptions
-    └── db.changelog-1.1-seed.yml       # сиды и синхронизация sequence
+ |— changelog-master.yml
+ |— v1/
+     |— db.changelog-1.0-schema.yml     # создание схемы и таблиц
+     |— db.changelog-1.0-init.yml       # users, subscriptions
+     |— db.changelog-1.1-seed.yml       # сиды и синхронизация sequence
 ```
 
 ---
 
-## 📦 Сиды по умолчанию
+## Сиды по умолчанию
 
 3 пользователя:
 - Ivan — ivan@mail.ru
