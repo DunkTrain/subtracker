@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.shevchenko.subtracker.audit.annotation.Auditable;
 import ru.shevchenko.subtracker.dto.subscription.SubscriptionCreateDto;
 import ru.shevchenko.subtracker.dto.subscription.SubscriptionResponseDto;
 import ru.shevchenko.subtracker.dto.subscription.SubscriptionStatsDto;
@@ -29,6 +30,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     @Transactional
+    @Auditable(action = "SUBSCRIPTION_ADD")
     public SubscriptionResponseDto addSubscription(Long userId, SubscriptionCreateDto dto) {
         Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
@@ -57,6 +59,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     @Transactional
+    @Auditable(action = "SUBSCRIPTION_DELETE")
     public void deleteSubscription(Long userId, Long subscriptionId) {
         Subscriptions sub = subscriptionRepository.findById(subscriptionId)
                 .orElseThrow(() -> new SubscriptionNotFoundException(subscriptionId));

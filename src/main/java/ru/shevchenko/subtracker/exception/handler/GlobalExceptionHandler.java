@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.shevchenko.subtracker.dto.error.ErrorResponse;
 import ru.shevchenko.subtracker.exception.EmailAlreadyExistsException;
+import ru.shevchenko.subtracker.exception.SubscriptionAlreadyExistsException;
+import ru.shevchenko.subtracker.exception.SubscriptionNotFoundException;
 import ru.shevchenko.subtracker.exception.UserNotFoundException;
 
 /**
@@ -43,6 +45,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleEmailExists(EmailAlreadyExistsException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    /**
+     * Обрабатывает ситуацию, когда подписка уже существует.
+     */
+    @ExceptionHandler(SubscriptionAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleSubscriptionExists(SubscriptionAlreadyExistsException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    /**
+     * Обрабатывает ситуацию, когда подписка не найдена или не принадлежит пользователю.
+     */
+    @ExceptionHandler(SubscriptionNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleSubscriptionNotFound(SubscriptionNotFoundException ex) {
         return new ErrorResponse(ex.getMessage());
     }
 
